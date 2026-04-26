@@ -241,10 +241,17 @@ export function AuthScreen() {
               id="email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); if (errors.email) setErrors((p) => ({ ...p, email: undefined })); }}
               required
               placeholder="Enter your email"
+              aria-invalid={!!errors.email}
+              className={errors.email ? "border-destructive focus-visible:ring-destructive" : ""}
             />
+            {errors.email && (
+              <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+                <AlertCircle className="h-3 w-3" /> {errors.email}
+              </p>
+            )}
           </div>
           
           <Button 
@@ -360,10 +367,17 @@ export function AuthScreen() {
                 id="fullName"
                 type="text"
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={(e) => { setFullName(e.target.value); if (errors.fullName) setErrors((p) => ({ ...p, fullName: undefined })); }}
                 required={!isLogin}
                 placeholder="Enter your full name"
+                aria-invalid={!!errors.fullName}
+                className={errors.fullName ? "border-destructive focus-visible:ring-destructive" : ""}
               />
+              {errors.fullName && (
+                <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+                  <AlertCircle className="h-3 w-3" /> {errors.fullName}
+                </p>
+              )}
             </div>
             <div>
               <Label htmlFor="mobile">Mobile Number</Label>
@@ -371,10 +385,17 @@ export function AuthScreen() {
                 id="mobile"
                 type="tel"
                 value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
+                onChange={(e) => { setMobile(e.target.value); if (errors.mobile) setErrors((p) => ({ ...p, mobile: undefined })); }}
                 required
                 placeholder="Enter your mobile number"
+                aria-invalid={!!errors.mobile}
+                className={errors.mobile ? "border-destructive focus-visible:ring-destructive" : ""}
               />
+              {errors.mobile && (
+                <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+                  <AlertCircle className="h-3 w-3" /> {errors.mobile}
+                </p>
+              )}
             </div>
           </>
         )}
@@ -385,10 +406,17 @@ export function AuthScreen() {
             id="email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => { setEmail(e.target.value); if (errors.email) setErrors((p) => ({ ...p, email: undefined })); }}
             required
             placeholder="Enter your email"
+            aria-invalid={!!errors.email}
+            className={errors.email ? "border-destructive focus-visible:ring-destructive" : ""}
           />
+          {errors.email && (
+            <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" /> {errors.email}
+            </p>
+          )}
         </div>
         
         <div>
@@ -398,9 +426,11 @@ export function AuthScreen() {
               id="password"
               type={showPassword ? "text" : "password"}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors((p) => ({ ...p, password: undefined })); }}
               required
               placeholder="Enter your password"
+              aria-invalid={!!errors.password}
+              className={errors.password ? "border-destructive focus-visible:ring-destructive pr-10" : "pr-10"}
             />
             <Button
               type="button"
@@ -416,6 +446,11 @@ export function AuthScreen() {
               )}
             </Button>
           </div>
+          {errors.password && (
+            <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" /> {errors.password}
+            </p>
+          )}
         </div>
 
         {!isLogin && (
@@ -426,9 +461,11 @@ export function AuthScreen() {
                 id="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => { setConfirmPassword(e.target.value); if (errors.confirmPassword) setErrors((p) => ({ ...p, confirmPassword: undefined })); }}
                 required={!isLogin}
                 placeholder="Confirm your password"
+                aria-invalid={!!errors.confirmPassword}
+                className={errors.confirmPassword ? "border-destructive focus-visible:ring-destructive pr-10" : "pr-10"}
               />
               <Button
                 type="button"
@@ -444,6 +481,11 @@ export function AuthScreen() {
                 )}
               </Button>
             </div>
+            {errors.confirmPassword && (
+              <p className="mt-1 text-xs text-destructive flex items-center gap-1">
+                <AlertCircle className="h-3 w-3" /> {errors.confirmPassword}
+              </p>
+            )}
           </div>
         )}
 
