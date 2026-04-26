@@ -235,7 +235,7 @@ export function LandingPage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
               <img 
-                src="/lovable-uploads/b0ad78d4-aa9f-4535-a7ec-d2f52a914912.png" 
+                src="/nadex-logo.png" 
                 alt="Nadex" 
                 className="w-8 h-8"
               />
@@ -957,7 +957,7 @@ export function LandingPage() {
             <div className="space-y-4 text-center sm:text-left">
               <div className="flex items-center gap-2 justify-center sm:justify-start">
                 <img 
-                  src="/lovable-uploads/b0ad78d4-aa9f-4535-a7ec-d2f52a914912.png" 
+                  src="/nadex-logo.png" 
                   alt="Nadex" 
                   className="w-8 h-8"
                 />
