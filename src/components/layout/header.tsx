@@ -24,10 +24,10 @@ export function Header() {
           <div className="flex items-center gap-2">
             <img 
               src="/lovable-uploads/b0ad78d4-aa9f-4535-a7ec-d2f52a914912.png" 
-              alt="Bitexa" 
+              alt="Nadex" 
               className="w-8 h-8"
             />
-            <h1 className="text-xl font-bold gradient-text">Bitexa</h1>
+            <h1 className="text-xl font-bold gradient-text">Nadex</h1>
           </div>
           
           <div className="hidden md:block">

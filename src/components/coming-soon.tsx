@@ -13,7 +13,7 @@ export function ComingSoon() {
           
           <div className="space-y-2">
             <h1 className="text-3xl font-bold gradient-text">
-              Bitexa
+              Nadex
             </h1>
             <p className="text-xl font-semibold text-foreground">
               Coming Soon

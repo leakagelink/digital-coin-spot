@@ -45,7 +45,7 @@ const Account = () => {
 
   const handleContactUs = () => {
     // Open contact form or redirect to contact page
-    alert('Contact support: support@bitexa.in');
+    alert('Contact support: support@nadex.in');
   };
 
   const handlePasswordChange = () => {
