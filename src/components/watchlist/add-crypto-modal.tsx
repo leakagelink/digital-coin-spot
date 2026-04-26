@@ -84,7 +84,7 @@ export function AddCryptoModal({ isOpen, onClose, onCryptoAdded, mode = 'watchli
           coin_id: crypto.coin_id,
           symbol: crypto.symbol,
           coin_name: crypto.name,
-        });
+        } as any);
 
       if (error) throw error;
 
@@ -185,7 +185,7 @@ export function AddCryptoModal({ isOpen, onClose, onCryptoAdded, mode = 'watchli
             pnl: (newQty * currentPrice) - newTotalInvestment,
             pnl_percentage: ((newQty * currentPrice) - newTotalInvestment) / newTotalInvestment * 100,
             updated_at: new Date().toISOString(),
-          })
+          } as any)
           .eq('id', existingPosition.id);
 
         if (error) throw error;

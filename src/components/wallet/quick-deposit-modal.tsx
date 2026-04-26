@@ -26,7 +26,7 @@ export function QuickDepositModal({ isOpen, onClose }: QuickDepositModalProps) {
   const [step, setStep] = useState<'amount' | 'payment' | 'credited'>('amount');
   const [timeRemaining, setTimeRemaining] = useState(COUNTDOWN_DURATION);
   const [hasCredited, setHasCredited] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const creditedRef = useRef(false);
 
   const { settings, isLoading: settingsLoading } = useAdminSettings();
