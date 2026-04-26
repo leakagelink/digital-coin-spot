@@ -145,20 +145,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) {
         console.error('Signin error:', error);
-        
-        // Handle email not confirmed error
+
+        // Detect account-doesn't-exist by attempting passwordless OTP with shouldCreateUser:false
+        // Supabase intentionally returns the same "Invalid login credentials" for wrong password
+        // OR missing user. We probe to give the user an exact reason.
+        let reasonCode: 'no_account' | 'wrong_password' | 'email_unverified' | 'other' = 'other';
+
         if (error.message?.includes('Email not confirmed')) {
+          reasonCode = 'email_unverified';
+        } else if (error.message?.includes('Invalid login credentials')) {
+          try {
+            const { error: otpError } = await supabase.auth.signInWithOtp({
+              email,
+              options: { shouldCreateUser: false },
+            });
+            const msg = otpError?.message?.toLowerCase() || '';
+            if (msg.includes('not found') || msg.includes('signups not allowed') || msg.includes("user")) {
+              // "Signups not allowed for otp" => user does NOT exist (since shouldCreateUser is false)
+              reasonCode = msg.includes('signups not allowed') ? 'no_account' : 'wrong_password';
+            } else {
+              // No error => OTP was sent => user exists => password was wrong
+              reasonCode = 'wrong_password';
+            }
+          } catch {
+            reasonCode = 'wrong_password';
+          }
+        }
+
+        if (reasonCode === 'email_unverified') {
           toast({
             title: "Email Not Verified",
             description: "कृपया पहले अपना ईमेल verify करें। अपने inbox में confirmation link चेक करें।",
             variant: "destructive",
             duration: 8000,
           });
-        } else if (error.message?.includes('Invalid login credentials')) {
+        } else if (reasonCode === 'no_account') {
           toast({
-            title: "Login Failed",
-            description: "गलत ईमेल या पासवर्ड। कृपया फिर से कोशिश करें।",
-            variant: "destructive"
+            title: "Account Not Found",
+            description: "इस email से कोई account नहीं है। कृपया पहले Sign Up करें।",
+            variant: "destructive",
+            duration: 7000,
+          });
+        } else if (reasonCode === 'wrong_password') {
+          toast({
+            title: "Wrong Password",
+            description: "Password गलत है। 'Forgot Password' पर click करके reset कर सकते हैं।",
+            variant: "destructive",
+            duration: 7000,
           });
         } else {
           toast({
@@ -167,6 +200,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             variant: "destructive"
           });
         }
+
+        return { error: { ...error, reasonCode } };
       } else {
         toast({
           title: "Welcome Back! 👋",
