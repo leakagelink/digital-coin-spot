@@ -209,7 +209,7 @@ export function AddCryptoModal({ isOpen, onClose, onCryptoAdded, mode = 'watchli
             trade_type: 'buy',
             status: 'open',
             position_type: 'long',
-          });
+          } as any);
 
         if (error) throw error;
       }
