@@ -6,9 +6,42 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from '@/hooks/use-toast';
-import { Eye, EyeOff, Loader2, Mail, CheckCircle } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, CheckCircle, AlertCircle } from 'lucide-react';
+import { z } from 'zod';
 
 type AuthStep = 'login' | 'signup' | 'email-confirmation' | 'forgot-password' | 'reset-sent';
+
+const emailSchema = z
+  .string()
+  .trim()
+  .min(1, { message: "Email is required" })
+  .email({ message: "Enter a valid email address (e.g. you@example.com)" })
+  .max(255, { message: "Email is too long" });
+
+const loginPasswordSchema = z
+  .string()
+  .min(1, { message: "Password is required" });
+
+const signupPasswordSchema = z
+  .string()
+  .min(8, { message: "Password must be at least 8 characters" })
+  .max(72, { message: "Password is too long" })
+  .refine((v) => /[A-Z]/.test(v), { message: "Add at least one uppercase letter" })
+  .refine((v) => /[a-z]/.test(v), { message: "Add at least one lowercase letter" })
+  .refine((v) => /\d/.test(v), { message: "Add at least one number" });
+
+const mobileSchema = z
+  .string()
+  .trim()
+  .regex(/^[0-9+\-\s()]{7,15}$/, { message: "Enter a valid mobile number" });
+
+const fullNameSchema = z
+  .string()
+  .trim()
+  .min(2, { message: "Name must be at least 2 characters" })
+  .max(100, { message: "Name is too long" });
+
+type FieldErrors = Partial<Record<'email' | 'password' | 'confirmPassword' | 'fullName' | 'mobile', string>>;
 
 export function AuthScreen() {
   const [step, setStep] = useState<AuthStep>('login');
@@ -21,6 +54,7 @@ export function AuthScreen() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [signupEmail, setSignupEmail] = useState('');
+  const [errors, setErrors] = useState<FieldErrors>({});
   
   const { signIn, signUp, resetPassword } = useAuth();
 
@@ -32,50 +66,77 @@ export function AuthScreen() {
     setFullName('');
     setShowPassword(false);
     setShowConfirmPassword(false);
+    setErrors({});
+  };
+
+  const validateLogin = (): boolean => {
+    const next: FieldErrors = {};
+    const e = emailSchema.safeParse(email);
+    if (!e.success) next.email = e.error.issues[0].message;
+    const p = loginPasswordSchema.safeParse(password);
+    if (!p.success) next.password = p.error.issues[0].message;
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const validateSignup = (): boolean => {
+    const next: FieldErrors = {};
+    const n = fullNameSchema.safeParse(fullName);
+    if (!n.success) next.fullName = n.error.issues[0].message;
+    const m = mobileSchema.safeParse(mobile);
+    if (!m.success) next.mobile = m.error.issues[0].message;
+    const e = emailSchema.safeParse(email);
+    if (!e.success) next.email = e.error.issues[0].message;
+    const p = signupPasswordSchema.safeParse(password);
+    if (!p.success) next.password = p.error.issues[0].message;
+    if (password !== confirmPassword) next.confirmPassword = "Passwords do not match";
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const validateForgot = (): boolean => {
+    const next: FieldErrors = {};
+    const e = emailSchema.safeParse(email);
+    if (!e.success) next.email = e.error.issues[0].message;
+    setErrors(next);
+    return Object.keys(next).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Field-level validation first
+    if (step === 'login' && !validateLogin()) return;
+    if (step === 'signup' && !validateSignup()) return;
+    if (step === 'forgot-password' && !validateForgot()) return;
+
     setLoading(true);
 
     try {
       if (step === 'login') {
         const { error } = await signIn(email, password);
         if (error) {
-          toast({
-            title: "Login Failed",
-            description: error.message,
-            variant: "destructive",
-          });
+          // Reflect server-side reason inline on the right field
+          const code = (error as any).reasonCode;
+          if (code === 'no_account') {
+            setErrors({ email: "No account found with this email. Please sign up." });
+          } else if (code === 'wrong_password') {
+            setErrors({ password: "Incorrect password. Try again or use 'Forgot password'." });
+          } else if (code === 'email_unverified') {
+            setErrors({ email: "Email not verified yet. Check your inbox." });
+          }
         }
       } else if (step === 'signup') {
-        // Validate password match
-        if (password !== confirmPassword) {
-          toast({
-            title: "Password Mismatch",
-            description: "Passwords do not match. Please try again.",
-            variant: "destructive",
-          });
-          setLoading(false);
-          return;
-        }
-
-        // Validate password length
-        if (password.length < 6) {
-          toast({
-            title: "Password Too Short",
-            description: "Password must be at least 6 characters long.",
-            variant: "destructive",
-          });
-          setLoading(false);
-          return;
-        }
-
         const { error } = await signUp(email, password, fullName, mobile);
         if (!error) {
-          // Auto-confirm is enabled, user will be logged in automatically
-          // No need to show email confirmation screen
           resetFields();
+        } else {
+          const msg = (error.message || '').toLowerCase();
+          if (msg.includes('already registered') || msg.includes('already exists')) {
+            setErrors({ email: "This email is already registered. Please log in instead." });
+          } else if (msg.includes('weak') || msg.includes('pwned')) {
+            setErrors({ password: "This password is too weak / has been leaked. Choose a stronger one." });
+          }
         }
       } else if (step === 'forgot-password') {
         const { error } = await resetPassword(email);
