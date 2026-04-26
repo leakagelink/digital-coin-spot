@@ -27,7 +27,6 @@ export function Header() {
               alt="Nadex" 
               className="w-8 h-8"
             />
-            <h1 className="text-xl font-bold gradient-text">Nadex</h1>
           </div>
           
           <div className="hidden md:block">
