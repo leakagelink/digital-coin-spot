@@ -100,8 +100,9 @@ async function fetchWithRotation(symbols: string[]): Promise<{ data: any; keyInd
       console.log(`Successfully fetched data with API key ${i + 1}`);
       return { data, keyIndex: i };
     } catch (error) {
-      console.log(`API key ${i + 1} fetch error:`, error.message);
-      lastError = error;
+      const err = error instanceof Error ? error : new Error(String(error));
+      console.log(`API key ${i + 1} fetch error:`, err.message);
+      lastError = err;
       continue;
     }
   }
@@ -151,8 +152,9 @@ serve(async (req: Request): Promise<Response> => {
     return new Response(JSON.stringify(out), { status: 200, headers: jsonHeaders });
   } catch (e) {
     console.error("cmc-proxy error:", e);
+    const message = e instanceof Error ? e.message : String(e);
     return new Response(
-      JSON.stringify({ error: "Internal error", message: e?.message || String(e) }),
+      JSON.stringify({ error: "Internal error", message }),
       { status: 500, headers: jsonHeaders }
     );
   }
