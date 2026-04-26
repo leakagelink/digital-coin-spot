@@ -75,7 +75,7 @@ export function EditBalanceDialog({ userId, currentBalance, userLabel, onSuccess
         amount: value - currentBalance,
         total_value: value,
         status: 'completed',
-      });
+      } as any);
 
       console.log("Balance updated successfully");
       toast({

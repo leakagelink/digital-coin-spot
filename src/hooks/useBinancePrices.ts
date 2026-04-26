@@ -33,7 +33,7 @@ export function useBinancePrices() {
   const [prices, setPrices] = useState<Record<string, BinancePrice>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const wsConnections = useRef<Record<string, WebSocket>>({});
   const priceHistoryRef = useRef<Record<string, number[]>>({});
 

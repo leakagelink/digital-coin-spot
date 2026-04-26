@@ -12,7 +12,7 @@ export function AppDownloadSection() {
       const { data, error } = await supabase
         .storage
         .from('app-downloads')
-        .download('bitexa-app.apk');
+        .download('nadex-app.apk');
       
       if (error) {
         console.error('Download error:', error);
@@ -23,7 +23,7 @@ export function AppDownloadSection() {
       const url = URL.createObjectURL(data);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Bitexa-App.apk';
+      a.download = 'Nadex-App.apk';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -41,7 +41,7 @@ export function AppDownloadSection() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Smartphone className="h-5 w-5 text-primary" />
-          Download Bitexa App
+          Download Nadex App
         </CardTitle>
         <CardDescription>
           Get the mobile app for a better trading experience

@@ -235,11 +235,11 @@ export function LandingPage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
               <img 
-                src="/lovable-uploads/b0ad78d4-aa9f-4535-a7ec-d2f52a914912.png" 
-                alt="Bitexa" 
+                src="/nadex-logo.png" 
+                alt="Nadex" 
                 className="w-8 h-8"
               />
-              <h1 className="text-xl font-bold gradient-text">Bitexa</h1>
+              <h1 className="text-xl font-bold gradient-text">Nadex</h1>
             </div>
             
             {/* Desktop Navigation */}
@@ -324,7 +324,7 @@ export function LandingPage() {
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground animate-fade-in max-w-3xl mx-auto" style={{ animationDelay: '0.1s' }}>
-            Join 10,000+ traders who trust Bitexa for secure, fast, and reliable cryptocurrency trading with real-time market data
+            Join 10,000+ traders who trust Nadex for secure, fast, and reliable cryptocurrency trading with real-time market data
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
@@ -612,7 +612,7 @@ export function LandingPage() {
       {/* Features Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">Why Choose Bitexa?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">Why Choose Nadex?</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Experience the best-in-class features designed for modern traders
           </p>
@@ -672,9 +672,9 @@ export function LandingPage() {
       {/* About Us Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="max-w-4xl mx-auto text-center space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold gradient-text">About Bitexa</h2>
+          <h2 className="text-3xl md:text-4xl font-bold gradient-text">About Nadex</h2>
           <p className="text-lg text-muted-foreground">
-            Bitexa is a cutting-edge cryptocurrency trading platform designed for both beginners and 
+            Nadex is a cutting-edge cryptocurrency trading platform designed for both beginners and 
             experienced traders. We provide a seamless, secure, and user-friendly environment to trade 
             your favorite cryptocurrencies with confidence.
           </p>
@@ -721,9 +721,9 @@ export function LandingPage() {
       {/* Why Choose Us Section */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-primary/5 rounded-3xl">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">Why Choose Bitexa?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">Why Choose Nadex?</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of traders who trust Bitexa for their cryptocurrency trading needs
+            Join thousands of traders who trust Nadex for their cryptocurrency trading needs
           </p>
         </div>
 
@@ -783,13 +783,13 @@ export function LandingPage() {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold gradient-text mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-muted-foreground">Everything you need to know about trading on Bitexa</p>
+            <p className="text-lg text-muted-foreground">Everything you need to know about trading on Nadex</p>
           </div>
 
           <Accordion type="single" collapsible className="space-y-4">
             <AccordionItem value="item-1" className="glass border border-primary/20 rounded-lg px-6">
               <AccordionTrigger className="text-left font-semibold hover:text-primary">
-                Is Bitexa platform secure?
+                Is Nadex platform secure?
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground">
                 Yes, absolutely. We use bank-level 256-bit SSL encryption, two-factor authentication, and cold storage 
@@ -858,7 +858,7 @@ export function LandingPage() {
                 ))}
               </div>
               <p className="text-muted-foreground">
-                "Bitexa has completely transformed my trading experience. The platform is intuitive, 
+                "Nadex has completely transformed my trading experience. The platform is intuitive, 
                 fast, and secure. Highly recommended!"
               </p>
               <div className="flex items-center gap-3">
@@ -904,7 +904,7 @@ export function LandingPage() {
                 ))}
               </div>
               <p className="text-muted-foreground">
-                "As a beginner, I found Bitexa very easy to use. The platform guides you through 
+                "As a beginner, I found Nadex very easy to use. The platform guides you through 
                 everything. Great for starting your crypto journey!"
               </p>
               <div className="flex items-center gap-3">
@@ -932,7 +932,7 @@ export function LandingPage() {
               Ready to Start Trading?
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in px-4" style={{ animationDelay: '0.1s' }}>
-              Join Bitexa today and experience the future of cryptocurrency trading. 
+              Join Nadex today and experience the future of cryptocurrency trading. 
               Create your account in minutes and start trading instantly.
             </p>
             <div className="pt-2">
@@ -957,11 +957,11 @@ export function LandingPage() {
             <div className="space-y-4 text-center sm:text-left">
               <div className="flex items-center gap-2 justify-center sm:justify-start">
                 <img 
-                  src="/lovable-uploads/b0ad78d4-aa9f-4535-a7ec-d2f52a914912.png" 
-                  alt="Bitexa" 
+                  src="/nadex-logo.png" 
+                  alt="Nadex" 
                   className="w-8 h-8"
                 />
-                <span className="text-xl font-bold gradient-text">Bitexa</span>
+                <span className="text-xl font-bold gradient-text">Nadex</span>
               </div>
               <p className="text-sm text-muted-foreground">
                 Your trusted platform for cryptocurrency trading with real-time data and secure transactions.
@@ -1000,7 +1000,7 @@ export function LandingPage() {
                 </li>
                 <li className="flex items-center gap-2 justify-center sm:justify-start">
                   <Mail className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="break-all">support@bitexa.in</span>
+                  <span className="break-all">support@nadex.in</span>
                 </li>
                 <li className="flex items-center gap-2 justify-center sm:justify-start">
                   <MessageCircle className="h-4 w-4 text-primary flex-shrink-0" />
@@ -1019,7 +1019,7 @@ export function LandingPage() {
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground text-center">
-                © 2025 Bitexa. All rights reserved. Trade responsibly.
+                © 2025 Nadex. All rights reserved. Trade responsibly.
               </p>
             </div>
           </div>
