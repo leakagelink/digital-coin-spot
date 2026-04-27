@@ -492,6 +492,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_add_funds: {
+        Args: {
+          admin_id: string
+          amount: number
+          notes?: string
+          target_user_id: string
+        }
+        Returns: Json
+      }
       admin_delete_user: {
         Args: { admin_id: string; target_user_id: string }
         Returns: Json
