@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
@@ -79,7 +80,31 @@ export function DepositRequestsTable() {
     enabled: !!user,
     staleTime: 0,
     refetchOnWindowFocus: true,
+    refetchInterval: 15000,
   });
+
+  // Realtime subscription: instantly refetch when deposit_requests change
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel("admin-deposit-requests-realtime")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "deposit_requests" },
+        (payload) => {
+          console.log("Realtime deposit_requests change:", payload.eventType);
+          refetch();
+        }
+      )
+      .subscribe((status) => {
+        console.log("Deposit realtime channel status:", status);
+      });
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, refetch]);
 
   const approve = async (id: string) => {
     if (!user) return;
