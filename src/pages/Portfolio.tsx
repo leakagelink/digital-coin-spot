@@ -166,8 +166,35 @@ const Portfolio = () => {
     if (!user) return;
 
     try {
-      // Calculate proceeds: return original investment + P&L
-      const proceeds = position.current_value;
+      // Calculate proceeds using LIVE price for accurate P&L
+      // Priority: 1) live market price, 2) admin-overridden current_value, 3) buy_price fallback
+      const amount = Number(position.amount) || 0;
+      const investment = Number(position.total_investment) || (amount * Number(position.buy_price));
+      const livePriceINR = livePrices[position.symbol]?.priceINR;
+      const isAdminOverride = position.admin_price_override === true;
+
+      let proceeds: number;
+      if (isAdminOverride) {
+        // Admin-controlled position: use the displayed (calculated) current_value
+        proceeds = Number(position.current_value) || investment;
+      } else if (livePriceINR && livePriceINR > 0) {
+        // Use live market price for real-time P&L
+        proceeds = amount * livePriceINR;
+      } else {
+        // Fallback to stored current_value, then investment
+        proceeds = Number(position.current_value) > 0 ? Number(position.current_value) : investment;
+      }
+
+      if (!proceeds || proceeds <= 0) {
+        toast({
+          title: "Price load nahi ho payi",
+          description: "Live price abhi available nahi hai. Thodi der baad try karein.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const sellPrice = amount > 0 ? proceeds / amount : Number(position.buy_price);
 
       // Delete the position
       const { error: positionError } = await supabase
@@ -204,17 +231,18 @@ const Portfolio = () => {
           symbol: position.symbol,
           coin_name: position.coin_name,
           trade_type: 'sell',
-          quantity: position.amount,
-          price: position.current_price,
+          quantity: amount,
+          price: sellPrice,
           total_amount: proceeds,
           status: 'completed',
         });
 
       if (tradeError) throw tradeError;
 
+      const pnl = proceeds - investment;
       toast({
         title: "Position closed successfully",
-        description: `Sold ${position.amount.toFixed(6)} ${position.symbol} for ₹${proceeds.toFixed(2)}`,
+        description: `Sold ${amount.toFixed(6)} ${position.symbol} for ₹${proceeds.toFixed(2)} (${pnl >= 0 ? '+' : ''}₹${pnl.toFixed(2)} P&L)`,
       });
 
       refetch(); // Refresh portfolio data
